@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,10 @@
   "bugs": {
     "url": "https://github.com/BartoszKopec/todo-list/issues"
   },
-  "homepage": "https://github.com/BartoszKopec/todo-list#readme"
+  "homepage": "https://github.com/BartoszKopec/todo-list#readme",
+  "dependencies": {
+    "@koa/router": "^8.0.8",
+    "koa": "^2.11.0",
+    "koa-static": "^5.0.0"
+  }
 }
