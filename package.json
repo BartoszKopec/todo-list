@@ -20,6 +20,7 @@
   "homepage": "https://github.com/BartoszKopec/todo-list#readme",
   "dependencies": {
     "@koa/router": "^8.0.8",
+    "azure-storage": "^2.10.3",
     "koa": "^2.11.0",
     "koa-favicon": "^2.1.0",
     "koa-logger": "^3.2.1",
