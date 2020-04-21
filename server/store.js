@@ -1,5 +1,6 @@
 const storage = require('azure-storage')
-const service = storage.createTableService()
+const retryOperation = new storage.LinearRetryPolicyFilter();
+const service = storage.createTableService().withFilter(retryOperation);
 const table = 'tasks'
 
 const init = async () => (
