@@ -15,6 +15,7 @@ const addTask = async () => {
     title: data.get('title'),
     description: data.get('description')
   })
+
   return await fetch('/api/tasks', { method: 'POST', headers, body })
 }
 
@@ -28,7 +29,10 @@ addTaskForm.addEventListener('submit', (event) => {
   setTimeout(() => {
     addTask()
       .then((response) => {
-        if (!response.ok) {
+        if(response.status == 400){
+          throw Error('Nie można dodać zadania bez tytułu. Podaj tytuł zadania i spróbuj ponownie.')
+        }
+        if (!response.ok && response.status != 400) {
           throw Error('Wystąpił błąd podczas dodawania zadania. Spróbuj ponownie później.')
         }
 
