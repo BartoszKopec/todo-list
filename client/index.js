@@ -6,6 +6,7 @@ const addTaskMsg = document.querySelector('#addTaskMsg')
 const tasksList = document.querySelector('#tasksList')
 const tasksListMsg = document.querySelector('#tasksListMsg')
 
+
 const addTask = async () => {
   const data = new FormData(addTaskForm)
 
@@ -42,15 +43,20 @@ const listTasks = async () => {
                    
         const description = document.createElement('td')
         description.innerHTML = `<p>${task.description == '' ? 'Brak opisu': task.description}</p>`
+        
+        const timestamp = document.createElement('td')
+        timestamp.innerHTML = `<p>${moment(task.Timestamp).format('DD-MM-YYYY')}</p>`
 
         const row = document.createElement('tr')
         row.appendChild(title)
         row.appendChild(description)
+        row.appendChild(timestamp)
 
         tasksList.appendChild(row)
       })
     })
-    .catch(() => {
+    .catch((e) => {
+      console.log(e.message)
       tasksListMsg.textContent = 'Wystąpił błąd podczas pobierania listy zadań. Spróbuj ponownie później.'
       tasksListMsg.classList.add('is-danger')
       tasksListMsg.classList.remove('is-hidden')

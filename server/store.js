@@ -16,7 +16,6 @@ const service = storage.createTableService()
   // .withFilter(retryOperation)
 const table = 'tasks'
 
-
 const init = async () => (
   new Promise((resolve, reject) => {
     service.createTableIfNotExists(table, (error, result, response) => {
@@ -50,13 +49,14 @@ const addTask = async ({ title, description }) => (
 const listTasks = async () => (
   new Promise((resolve, reject) => {
     const query = new storage.TableQuery()
-      .select(['title', 'description'])
+      .select(['title', 'description', 'Timestamp'])
       .where('PartitionKey eq ?', 'task')
 
     service.queryEntities(table, query, null, (error, result) => {
       !error ? resolve(result.entries.map((entry) => ({
         title: entry.title._,
-        description: entry.description._
+        description: entry.description._,
+        Timestamp: entry.Timestamp._
       }))) : reject()
     })
   })
