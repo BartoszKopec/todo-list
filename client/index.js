@@ -39,8 +39,13 @@ const listTasks = async () => {
         const title = document.createElement('td')
         title.innerHTML = `<p>${task.title}</p>`
 
+                   
+        const description = document.createElement('td')
+        description.innerHTML = `<p>${task.description == '' ? 'Brak opisu': task.description}</p>`
+
         const row = document.createElement('tr')
         row.appendChild(title)
+        row.appendChild(description)
 
         tasksList.appendChild(row)
       })
