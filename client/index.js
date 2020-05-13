@@ -5,7 +5,66 @@ const addTaskBtn = document.querySelector('#addTaskBtn')
 const addTaskMsg = document.querySelector('#addTaskMsg')
 const tasksList = document.querySelector('#tasksList')
 const tasksListMsg = document.querySelector('#tasksListMsg')
+const sortTasksBtn = document.querySelector('#sortTasksBtn')
 
+let tasks = []
+let sortAsc = false
+
+const sortTasks = ()=>{
+  console.log(tasks)
+  tasks = tasks.sort((a, b)=>{
+    var x
+    if(sortAsc){
+      x = moment(a.Timestamp) - moment(b.Timestamp)
+    }
+    else{
+      x = moment(b.Timestamp) - moment(a.Timestamp)
+    }
+    return x
+  })
+
+  console.log(sortAsc)
+  if(!sortAsc){
+    sortTasksBtn.classList.remove("is-light")
+    sortTasksBtn.classList.add("is-dark")
+  }
+  else{
+    sortTasksBtn.classList.remove("is-dark")
+    sortTasksBtn.classList.add("is-light")
+  }
+
+  sortAsc = !sortAsc
+  displayTasks(tasks)
+}
+
+const displayTasks = (arr)=>{
+  tasksList.innerHTML=''
+  arr.forEach((task) => {
+    const title = document.createElement('td')
+    title.innerHTML = `<p>${task.title}</p>`
+
+               
+    const description = document.createElement('td')
+    description.innerHTML = `<p>${task.description == '' ? 'Brak opisu': task.description}</p>`
+    
+    const timestamp = document.createElement('td')
+    timestamp.innerHTML = `<p>${moment(task.Timestamp).format('DD-MM-YYYY')}</p>`
+
+    const actions = document.createElement('td')
+    actions.classList.add('has-text-right')
+    actions.innerHTML = `<button class="button is-small is-primary" id="deleteTask${task.id}" 
+      onclick="completeTask('${task.id}');"><span class="icon is-small"><i class="fas fa-check">
+      </i></span></button>`
+
+    const row = document.createElement('tr')
+    row.appendChild(title)
+    row.appendChild(description)
+    row.appendChild(timestamp)
+    row.appendChild(actions)
+
+    tasksList.appendChild(row)
+  })
+}
 
 const addTask = async () => {
   const data = new FormData(addTaskForm)
@@ -32,35 +91,11 @@ const listTasks = async () => {
       if (!response.ok) {
         throw Error(response.statusText)
       }
-
       return response.json()
     })
     .then((response) => {
-      response.forEach((task) => {
-        const title = document.createElement('td')
-        title.innerHTML = `<p>${task.title}</p>`
-
-                   
-        const description = document.createElement('td')
-        description.innerHTML = `<p>${task.description == '' ? 'Brak opisu': task.description}</p>`
-        
-        const timestamp = document.createElement('td')
-        timestamp.innerHTML = `<p>${moment(task.Timestamp).format('DD-MM-YYYY')}</p>`
-
-        const actions = document.createElement('td')
-        actions.classList.add('has-text-right')
-        actions.innerHTML = `<button class="button is-small is-primary" id="deleteTask${task.id}" 
-          onclick="completeTask('${task.id}');"><span class="icon is-small"><i class="fas fa-check">
-          </i></span></button>`
-
-        const row = document.createElement('tr')
-        row.appendChild(title)
-        row.appendChild(description)
-        row.appendChild(timestamp)
-        row.appendChild(actions)
-
-        tasksList.appendChild(row)
-      })
+      tasks = response
+      displayTasks(response)
     })
     .catch((e) => {
       console.log(e.message)
