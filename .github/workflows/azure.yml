@@ -17,12 +17,12 @@ jobs:
       run: |
         npm install
 
+    - name: 'Run tests'
+      run: npm run test
+      if: github.ref == 'refs/heads/test' 
+
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v1
       with: 
         app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-    
-    - name: 'Run tests'
-      run: npm run test
-      if: github.ref == 'refs/heads/test' 
